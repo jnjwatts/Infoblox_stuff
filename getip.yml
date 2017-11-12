@@ -6,13 +6,13 @@
   tasks:
     - name: GetIP
       infoblox:
-        server: 13.73.119.145
-        username: jwatts
-        password: Jeffowesme
+        server: 13.70.140.114
+        username: someone
+        password: apassword
         api_version: 2.6
         action: reserve_next_available_ip
-        network: "{{the_network}}"
-        extattrs: "{{the_host}}"
+        network: "{{vlans}}"
+        extattrs: "{{extattrs}}"
         comment: "{{the_comment}}"
       register: result
 
