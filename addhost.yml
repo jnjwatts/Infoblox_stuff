@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: Add host
+      infoblox:
+        server: 13.73.119.145
+        username: jwatts
+        password: Jeffowesme
+        api_version: 2.6
+        action: add_host
+        network: "{{the_network}}"
+        host: "{{the_host}}"
+        address: "{{the_ipaddress}}"
+      register: result
+
+    - name: "Do awesome stuff with the result"
+      debug: msg=" {{result}} "

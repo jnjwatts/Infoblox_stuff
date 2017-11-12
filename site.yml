@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  gather_facts: False
+  connection: local
+  roles:
+    - ansible-role-add-host
