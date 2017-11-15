@@ -1,0 +1,32 @@
+---
+- hosts: all
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: Get Next Available IP
+      infoblox:
+        server: "{{ ip }}"
+        username: "{{ credentials['infoblox']['username'] }}"
+        password: "{{ credentials['infoblox']['password'] }}"
+        action: "get_next_available_ip"
+        network: "{{ network }}"
+        comment: "{{ comment }}"
+        extattrs: [{ "Username": "{{ username }}" }, { "SDM Number": "{{ sdm }}"}]
+      register: "infoblox"
+
+    - name: Send an e-Mail with the result
+      become: false
+      mail:
+        host: smtp.gmail.com
+        port: 587
+        username: "{{ credentials['gmailsmtp']['username'] }}"
+        password: "{{ credentials['gmailsmtp']['password'] }}"
+        to: "{{ useremail }}"
+        subject: 'IP Address for {{ network }}'
+        body: 'Hello {{requestername}}.    Your requested IP address is: {{ infoblox.result }}'
+      delegate_to: localhost
+
+    - debug:
+        var: infoblox
+
